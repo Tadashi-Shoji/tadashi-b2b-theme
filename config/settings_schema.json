@@ -1451,5 +1451,24 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Outlet sale",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Products tagged 'outlet' show a strikethrough sale price on the storefront. The compare-at is synthesized from this discount because B2B catalog price lists hide the variant's compare-at price. Keep this equal to the discount applied by the outlet script."
+      },
+      {
+        "type": "range",
+        "id": "outlet_discount_percent",
+        "min": 0,
+        "max": 90,
+        "step": 5,
+        "default": 20,
+        "unit": "%",
+        "label": "Outlet discount percent"
+      }
+    ]
   }
 ]

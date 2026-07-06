@@ -26,6 +26,22 @@
   assign price_min = product.price_min
   assign price_max = product.price_max
   assign available = target.available | default: false
+
+  # Outlet promo strikethrough (B2B):
+  # B2B catalog price lists apply contextual pricing that does NOT surface the variant's
+  # compare_at_price, so the normal `compare_at_price > price` sale check never fires.
+  # For products tagged 'outlet' we synthesize a compare-at from the shown price
+  # (price / (1 - discount%)) so the existing sale markup renders the strikethrough.
+  # The discount % is configurable in Theme Settings > Outlet sale (default 20).
+  assign outlet_pct = settings.outlet_discount_percent | default: 20
+  if product.tags contains 'outlet' and outlet_pct > 0
+    assign outlet_denom = 100 | minus: outlet_pct
+    assign outlet_compare = price | times: 100 | divided_by: outlet_denom
+    if outlet_compare > compare_at_price
+      assign compare_at_price = outlet_compare
+    endif
+  endif
+
   assign money_price = price | money
   assign money_price_min = price_min | money
   assign money_price_max = price_max | money
